@@ -1,0 +1,1422 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>QR генератор ✦ с отзеркаленной камерой</title>
+		<!-- QrCode.js library + html5-qrcode для сканера -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+		<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap"
+			rel="stylesheet" />
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				font-family: 'Inter', system-ui, sans-serif;
+			}
+			body {
+				background: linear-gradient(145deg, #f0f4fa 0%, #e6ecf5 100%);
+				min-height: 100vh;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 1rem;
+			}
+			/* СТРАНИЦА ВХОДА */
+			.login-container {
+				background: rgba(255, 255, 255, 0.75);
+				backdrop-filter: blur(14px);
+				border-radius: 2.5rem;
+				box-shadow: 0 25px 45px -12px rgba(0, 20, 40, 0.35);
+				padding: 2.5rem 2.8rem;
+				width: 100%;
+				max-width: 420px;
+				border: 1px solid rgba(255, 255, 255, 0.5);
+				text-align: center;
+			}
+			.login-container h1 {
+				font-size: 2.2rem;
+				font-weight: 600;
+				background: linear-gradient(135deg, #1d2b3e, #2c3f5c);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				margin-bottom: 0.5rem;
+			}
+			.login-sub {
+				color: #4a5f7a;
+				margin-bottom: 2rem;
+				font-weight: 500;
+			}
+			.login-field {
+				width: 100%;
+				padding: 1rem 1.5rem;
+				background: white;
+				border: 1.5px solid rgba(200, 215, 235, 0.7);
+				border-radius: 3rem;
+				font-size: 1rem;
+				margin-bottom: 1.2rem;
+				outline: none;
+				transition: 0.15s;
+			}
+			.login-field:focus {
+				border-color: #5b8ed1;
+				box-shadow: 0 6px 14px rgba(70, 130, 200, 0.2);
+			}
+			.login-btn {
+				background: #1f3c68;
+				border: none;
+				border-radius: 3rem;
+				padding: 1rem 2rem;
+				font-weight: 600;
+				font-size: 1.1rem;
+				color: white;
+				cursor: pointer;
+				width: 100%;
+				box-shadow: 0 12px 18px -10px #1f3c68;
+				transition: all 0.2s;
+				margin-top: 0.8rem;
+			}
+			.login-btn:hover {
+				background: #254e86;
+				transform: translateY(-2px);
+			}
+			.error-message {
+				color: #b83e3e;
+				font-size: 0.9rem;
+				margin-top: 0.8rem;
+				background: rgba(255, 255, 255, 0.6);
+				padding: 0.6rem;
+				border-radius: 3rem;
+			}
+			/* ОСНОВНОЙ ИНТЕРФЕЙС */
+			.main-app {
+				display: none;
+				width: 100%;
+				max-width: 1200px;
+			}
+			.glass-card {
+				background: rgba(255, 255, 255, 0.75);
+				backdrop-filter: blur(14px);
+				border-radius: 2.5rem;
+				box-shadow:
+					0 25px 45px -12px rgba(0, 20, 40, 0.35),
+					inset 0 1px 2px rgba(255, 255, 255, 0.6);
+				width: 100%;
+				padding: 2rem 2rem 2.2rem;
+				border: 1px solid rgba(255, 255, 255, 0.5);
+			}
+			h1 {
+				font-size: 2.1rem;
+				font-weight: 600;
+				letter-spacing: -0.02em;
+				background: linear-gradient(135deg, #1d2b3e, #2c3f5c);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+				margin-bottom: 0.2rem;
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+			.sub {
+				color: #4a5f7a;
+				font-weight: 500;
+				margin-left: 0.25rem;
+				margin-bottom: 1.8rem;
+				font-size: 1rem;
+				border-left: 3px solid #7c9bca;
+				padding-left: 0.9rem;
+			}
+			.auth-bar {
+				background: rgba(255, 255, 255, 0.5);
+				border-radius: 3rem;
+				padding: 0.5rem 1rem 0.5rem 1.5rem;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				flex-wrap: wrap;
+				gap: 1rem;
+				margin-bottom: 2.3rem;
+				border: 1px solid rgba(255, 255, 255, 0.9);
+			}
+			.user-info {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+			}
+			.avatar {
+				width: 48px;
+				height: 48px;
+				background: linear-gradient(125deg, #3f5e8c, #638ecb);
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: white;
+				font-weight: 600;
+				font-size: 1.3rem;
+				box-shadow: 0 6px 12px rgba(52, 84, 129, 0.3);
+				border: 2px solid white;
+			}
+			.user-text .name {
+				font-size: 1.1rem;
+				color: #1e2c3f;
+				font-weight: 600;
+			}
+			.user-text .badge {
+				font-size: 0.8rem;
+				color: #396083;
+				background: rgba(90, 146, 210, 0.2);
+				padding: 0.2rem 0.8rem;
+				border-radius: 30px;
+				display: inline-block;
+				margin-top: 4px;
+				border: 1px dashed #5d8fc0;
+			}
+			.logout-btn {
+				background: transparent;
+				border: 1px solid #b9cae0;
+				border-radius: 2rem;
+				padding: 0.5rem 1.2rem;
+				font-size: 0.9rem;
+				font-weight: 500;
+				color: #3a4f6e;
+				cursor: pointer;
+				transition: 0.1s;
+			}
+			.logout-btn:hover {
+				background: rgba(255, 255, 255, 0.5);
+				border-color: #8ba4cc;
+			}
+
+			/* Панель инструментов */
+			.toolbar {
+				display: flex;
+				gap: 1rem;
+				margin-bottom: 1.5rem;
+				flex-wrap: wrap;
+			}
+			.tool-btn {
+				background: rgba(255, 255, 255, 0.6);
+				border: 1px solid rgba(255, 255, 255, 0.9);
+				border-radius: 3rem;
+				padding: 0.8rem 1.5rem;
+				font-weight: 600;
+				color: #1e3a5e;
+				cursor: pointer;
+				transition: 0.15s;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				backdrop-filter: blur(5px);
+			}
+			.tool-btn:hover {
+				background: white;
+				box-shadow: 0 8px 15px -8px #305e91;
+				transform: translateY(-2px);
+			}
+
+			.constructor {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 2rem;
+				margin-bottom: 2.5rem;
+			}
+			@media (max-width: 800px) {
+				.constructor {
+					grid-template-columns: 1fr;
+				}
+			}
+			.input-panel {
+				background: rgba(255, 255, 255, 0.5);
+				border-radius: 2rem;
+				padding: 1.8rem 1.6rem;
+				box-shadow:
+					inset 0 1px 4px rgba(255, 255, 255, 0.8),
+					0 6px 12px rgba(0, 0, 0, 0.04);
+			}
+			.input-panel label {
+				font-weight: 600;
+				font-size: 0.9rem;
+				color: #2e456e;
+				display: block;
+				margin-bottom: 0.4rem;
+			}
+			.field {
+				width: 100%;
+				padding: 0.9rem 1.2rem;
+				background: white;
+				border: 1.5px solid rgba(200, 215, 235, 0.7);
+				border-radius: 2rem;
+				font-size: 1rem;
+				margin-bottom: 1.3rem;
+				outline: none;
+			}
+			.field:focus {
+				border-color: #5b8ed1;
+				box-shadow: 0 6px 14px rgba(70, 130, 200, 0.2);
+			}
+			.qr-options {
+				display: flex;
+				gap: 1rem;
+				align-items: center;
+				flex-wrap: wrap;
+				margin: 1.2rem 0 1rem;
+			}
+			.size-select {
+				background: white;
+				border: 1px solid #cddef5;
+				border-radius: 2rem;
+				padding: 0.55rem 1.2rem;
+				font-weight: 500;
+				color: #1e3a5e;
+			}
+			.generate-btn {
+				background: #1f3c68;
+				border: none;
+				border-radius: 3rem;
+				padding: 0.8rem 2rem;
+				font-weight: 600;
+				font-size: 1.05rem;
+				color: white;
+				cursor: pointer;
+				box-shadow: 0 12px 18px -10px #1f3c68;
+				transition: all 0.2s;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+			.generate-btn:hover {
+				background: #254e86;
+				transform: translateY(-2px);
+			}
+			.qr-preview {
+				background: white;
+				border-radius: 2rem;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				padding: 2rem 1rem;
+				box-shadow: 0 18px 30px -12px rgba(31, 60, 100, 0.3);
+			}
+			#qr-container {
+				background: white;
+				padding: 1.2rem;
+				border-radius: 1.8rem;
+				box-shadow:
+					inset 0 0 0 1px rgba(0, 0, 0, 0.05),
+					0 12px 22px -10px #7d9bc0;
+				margin-bottom: 1rem;
+				display: flex;
+				justify-content: center;
+				min-height: 200px;
+				align-items: center;
+			}
+			.qr-placeholder {
+				width: 200px;
+				height: 200px;
+				background: #f2f6fd;
+				border-radius: 1.5rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: #7a95bb;
+				font-weight: 500;
+			}
+			.save-btn {
+				background: #dce7f5;
+				border: 1px solid white;
+				border-radius: 3rem;
+				padding: 0.8rem 2rem;
+				font-weight: 600;
+				color: #1d3b62;
+				cursor: pointer;
+				transition: 0.15s;
+				border: 1px solid white;
+				margin-bottom: 0.5rem;
+			}
+			.save-btn:not(:disabled):hover {
+				background: #c8d9f0;
+				transform: scale(0.98);
+			}
+			.save-btn:disabled {
+				opacity: 0.3;
+				cursor: not-allowed;
+			}
+			.share-btn {
+				background: #e3eaf3;
+				border: 1px solid white;
+				border-radius: 3rem;
+				padding: 0.7rem 2rem;
+				font-weight: 600;
+				color: #1d3b62;
+				cursor: pointer;
+				transition: 0.15s;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+			.share-btn:not(:disabled):hover {
+				background: #d2def0;
+				transform: translateY(-2px);
+			}
+			.share-btn:disabled {
+				opacity: 0.3;
+				cursor: not-allowed;
+			}
+			.history-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin-bottom: 1rem;
+				flex-wrap: wrap;
+				gap: 1rem;
+			}
+			.history-header h3 {
+				font-weight: 600;
+				color: #1e385c;
+				font-size: 1.3rem;
+			}
+			.clear-history {
+				background: none;
+				border: 1px solid #b3c7e2;
+				border-radius: 2rem;
+				padding: 0.3rem 1.2rem;
+				font-size: 0.85rem;
+				color: #4b658f;
+				cursor: pointer;
+			}
+			.clear-history:hover {
+				background: rgba(255, 255, 255, 0.6);
+			}
+			.history-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+				gap: 1rem;
+				max-height: 200px;
+				overflow-y: auto;
+				padding: 0.5rem 0.3rem;
+			}
+			.history-item {
+				background: rgba(255, 255, 255, 0.5);
+				backdrop-filter: blur(2px);
+				border-radius: 1.5rem;
+				padding: 0.8rem;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				border: 1px solid rgba(255, 255, 255, 0.8);
+				cursor: pointer;
+				transition: 0.1s;
+			}
+			.history-item:hover {
+				background: white;
+				border-color: #9cb9df;
+				transform: translateY(-2px);
+			}
+			.history-qr {
+				width: 80px;
+				height: 80px;
+				background: #fafcff;
+				border-radius: 1rem;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-bottom: 0.3rem;
+				pointer-events: none;
+			}
+			.history-qr canvas,
+			.history-qr img {
+				width: 70px !important;
+				height: 70px !important;
+				border-radius: 0.7rem;
+			}
+			.history-label {
+				font-size: 0.7rem;
+				font-weight: 500;
+				color: #1f3450;
+				max-width: 110px;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			.history-date {
+				font-size: 0.6rem;
+				color: #687ea2;
+			}
+			.empty-history {
+				color: #6d84a8;
+				padding: 1rem;
+				background: rgba(255, 255, 255, 0.4);
+				border-radius: 2rem;
+				text-align: center;
+			}
+			.footer-note {
+				margin-top: 1.8rem;
+				text-align: center;
+				color: #6a81a5;
+				font-size: 0.8rem;
+				border-top: 1px dashed rgba(98, 133, 185, 0.3);
+				padding-top: 1.2rem;
+			}
+
+			/* МОДАЛЬНОЕ ОКНО */
+			.modal-overlay {
+				display: none;
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.5);
+				backdrop-filter: blur(5px);
+				align-items: center;
+				justify-content: center;
+				z-index: 1000;
+			}
+			.modal-content {
+				background: rgba(255, 255, 255, 0.95);
+				backdrop-filter: blur(10px);
+				border-radius: 2.5rem;
+				padding: 2.5rem;
+				max-width: 500px;
+				width: 90%;
+				box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.4);
+				border: 1px solid rgba(255, 255, 255, 0.8);
+				position: relative;
+				animation: modalAppear 0.3s ease;
+			}
+			@keyframes modalAppear {
+				from {
+					opacity: 0;
+					transform: scale(0.9);
+				}
+				to {
+					opacity: 1;
+					transform: scale(1);
+				}
+			}
+			.modal-close {
+				position: absolute;
+				top: 1.2rem;
+				right: 1.5rem;
+				font-size: 2rem;
+				cursor: pointer;
+				color: #7a8fb0;
+				line-height: 1;
+				transition: 0.1s;
+				background: none;
+				border: none;
+				width: 40px;
+				height: 40px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 50%;
+			}
+			.modal-close:hover {
+				color: #1f3857;
+				background: rgba(0, 0, 0, 0.05);
+			}
+			.modal-title {
+				font-size: 1.6rem;
+				font-weight: 600;
+				color: #1d2b3e;
+				margin-bottom: 1.5rem;
+				padding-right: 2rem;
+			}
+			.modal-qr-container {
+				background: white;
+				padding: 1.5rem;
+				border-radius: 2rem;
+				display: flex;
+				justify-content: center;
+				margin-bottom: 1.5rem;
+				box-shadow:
+					inset 0 2px 10px rgba(0, 0, 0, 0.02),
+					0 10px 20px -10px #30547b;
+			}
+			.modal-qr-container div {
+				display: flex;
+				justify-content: center;
+			}
+			.modal-qr-container canvas,
+			.modal-qr-container img {
+				border-radius: 1rem;
+				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+			}
+			.modal-link {
+				background: #eef3fc;
+				border-radius: 2rem;
+				padding: 1rem 1.5rem;
+				word-break: break-all;
+				font-size: 0.95rem;
+				color: #1e3b64;
+				border: 1px solid #cddef5;
+				margin-bottom: 1rem;
+				font-weight: 500;
+			}
+			.modal-link-label {
+				font-size: 0.8rem;
+				color: #5a77a0;
+				margin-bottom: 0.3rem;
+				margin-left: 0.5rem;
+			}
+			.modal-caption {
+				font-size: 1.1rem;
+				color: #1f3857;
+				background: rgba(200, 220, 245, 0.4);
+				padding: 0.8rem 1.5rem;
+				border-radius: 2rem;
+				font-weight: 500;
+				margin-bottom: 1rem;
+			}
+			.modal-caption:empty {
+				display: none;
+			}
+			.modal-footer {
+				display: flex;
+				gap: 1rem;
+				justify-content: flex-end;
+				margin-top: 1.5rem;
+				flex-wrap: wrap;
+			}
+			.modal-action-btn {
+				background: #1f3c68;
+				border: none;
+				border-radius: 2rem;
+				padding: 0.7rem 2rem;
+				color: white;
+				font-weight: 600;
+				cursor: pointer;
+				transition: 0.15s;
+			}
+			.modal-action-btn:hover {
+				background: #2b4f88;
+			}
+			.modal-share-btn {
+				background: #dce7f5;
+				border: 1px solid white;
+				border-radius: 2rem;
+				padding: 0.7rem 2rem;
+				color: #1d3b62;
+				font-weight: 600;
+				cursor: pointer;
+				transition: 0.15s;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+			.modal-share-btn:hover {
+				background: #c8d9f0;
+				transform: scale(0.98);
+			}
+
+			/* СКАНЕР С ОТЗЕРКАЛИВАНИЕМ */
+			.scanner-overlay {
+				display: none;
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.85);
+				backdrop-filter: blur(8px);
+				align-items: center;
+				justify-content: center;
+				z-index: 2000;
+			}
+			.scanner-container {
+				background: rgba(255, 255, 255, 0.1);
+				border-radius: 3rem;
+				padding: 2rem;
+				max-width: 600px;
+				width: 95%;
+				border: 2px solid rgba(255, 255, 255, 0.2);
+				backdrop-filter: blur(12px);
+			}
+			.scanner-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 1.5rem;
+				color: white;
+			}
+			.scanner-header h3 {
+				font-size: 1.8rem;
+				font-weight: 600;
+			}
+			.scanner-close {
+				background: none;
+				border: none;
+				color: white;
+				font-size: 2.5rem;
+				cursor: pointer;
+				width: 50px;
+				height: 50px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 50%;
+				transition: 0.1s;
+			}
+			.scanner-close:hover {
+				background: rgba(255, 255, 255, 0.2);
+			}
+
+			/* Контейнер для видео с отзеркаливанием */
+			.scanner-view {
+				position: relative;
+				width: 100%;
+				border-radius: 2rem;
+				overflow: hidden;
+				box-shadow: 0 20px 40px -10px black;
+				background: #000;
+			}
+
+			/* Отзеркаливание видео через трансформацию */
+			#reader {
+				transform: scaleX(-1); /* Зеркалим по горизонтали */
+				width: 100%;
+				border-radius: 2rem;
+			}
+
+			/* Исправляем отзеркаливание для области сканирования, чтобы рамка не переворачивалась */
+			#reader video {
+				transform: scaleX(
+					-1
+				); /* Двойное отзеркаливание для нормального отображения области сканирования */
+				border-radius: 2rem;
+			}
+
+			/* Альтернативный подход - через родительский контейнер */
+			.scanner-mirror {
+				transform: scaleX(-1);
+				width: 100%;
+			}
+
+			.scan-result {
+				background: rgba(255, 255, 255, 0.9);
+				border-radius: 2rem;
+				padding: 1.2rem;
+				margin-top: 1.5rem;
+				word-break: break-all;
+				font-weight: 500;
+			}
+			.use-scanned-btn {
+				background: #4caf92;
+				border: none;
+				border-radius: 2rem;
+				padding: 0.8rem 2rem;
+				color: white;
+				font-weight: 600;
+				cursor: pointer;
+				margin-top: 1rem;
+				width: 100%;
+				transition: 0.15s;
+			}
+			.use-scanned-btn:hover {
+				background: #3e9b80;
+			}
+
+			.camera-toggle {
+				background: rgba(255, 255, 255, 0.2);
+				border: 1px solid rgba(255, 255, 255, 0.3);
+				border-radius: 2rem;
+				padding: 0.5rem 1.2rem;
+				color: white;
+				cursor: pointer;
+				margin-top: 1rem;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				transition: 0.15s;
+			}
+			.camera-toggle:hover {
+				background: rgba(255, 255, 255, 0.3);
+			}
+		</style>
+	</head>
+	<body>
+		<!-- МОДАЛЬНОЕ ОКНО -->
+		<div id="modalOverlay" class="modal-overlay">
+			<div class="modal-content">
+				<button class="modal-close" id="modalCloseBtn">&times;</button>
+				<div class="modal-title" id="modalTitle">Просмотр QR-кода</div>
+				<div id="modalQrContainer" class="modal-qr-container"></div>
+				<div class="modal-link-label">🔗 Содержимое:</div>
+				<div id="modalLink" class="modal-link"></div>
+				<div class="modal-link-label">🏷 Подпись:</div>
+				<div id="modalCaption" class="modal-caption"></div>
+				<div class="modal-footer">
+					<button class="modal-share-btn" id="modalShareBtn">
+						📤 Поделиться
+					</button>
+					<button class="modal-action-btn" id="modalUseBtn">
+						Использовать
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- СКАНЕР С ОТЗЕРКАЛИВАНИЕМ -->
+		<div id="scannerOverlay" class="scanner-overlay">
+			<div class="scanner-container">
+				<div class="scanner-header">
+					<h3>📷 Сканировать QR</h3>
+					<button class="scanner-close" id="scannerCloseBtn">&times;</button>
+				</div>
+
+				<!-- Контейнер с отзеркаливанием -->
+				<div class="scanner-view">
+					<div id="reader"></div>
+				</div>
+
+				<!-- Кнопка переключения камеры -->
+				<button class="camera-toggle" id="toggleCameraBtn">
+					🔄 Переключить камеру
+				</button>
+
+				<div id="scanResult" class="scan-result" style="display: none"></div>
+				<button
+					id="useScannedBtn"
+					class="use-scanned-btn"
+					style="display: none">
+					Использовать результат
+				</button>
+			</div>
+		</div>
+
+		<!-- СТРАНИЦА ВХОДА -->
+		<div id="loginPage" class="login-container">
+			<h1>🔐 QR Access</h1>
+			<div class="login-sub">войдите для создания персональных QR</div>
+			<input
+				type="text"
+				id="loginUsername"
+				class="login-field"
+				placeholder="Логин"
+				value="admin" />
+			<input
+				type="password"
+				id="loginPassword"
+				class="login-field"
+				placeholder="Пароль"
+				value="123" />
+			<button class="login-btn" id="loginButton">Войти</button>
+			<div id="loginError" class="error-message" style="display: none">
+				Неверный логин или пароль
+			</div>
+			<div style="margin-top: 1.5rem; font-size: 0.85rem; color: #6b85a8">
+				используйте admin / 123
+			</div>
+		</div>
+
+		<!-- ОСНОВНОЕ ПРИЛОЖЕНИЕ -->
+		<div id="mainApp" class="main-app">
+			<div class="glass-card">
+				<div
+					style="
+						display: flex;
+						justify-content: space-between;
+						align-items: baseline;
+					">
+					<h1>✦ QR PERSCAN</h1>
+					<span
+						style="
+							font-size: 0.75rem;
+							background: rgba(0, 0, 0, 0.02);
+							padding: 0.3rem 1rem;
+							border-radius: 30px;
+						"
+						>admin панель</span
+					>
+				</div>
+				<div class="sub">создавай, сканируй и делись QR-кодами</div>
+
+				<!-- Блок пользователя -->
+				<div class="auth-bar">
+					<div class="user-info">
+						<div class="avatar" id="adminAvatar">👨‍💼</div>
+						<div class="user-text">
+							<span class="name" id="adminName">admin</span>
+							<div class="badge">администратор</div>
+						</div>
+					</div>
+					<button class="logout-btn" id="logoutButton">Выйти</button>
+				</div>
+
+				<!-- Панель инструментов -->
+				<div class="toolbar">
+					<button class="tool-btn" id="scanBtn">📷 Сканировать QR</button>
+				</div>
+
+				<!-- Генератор QR -->
+				<div class="constructor">
+					<div class="input-panel">
+						<label>📇 Текст / ссылка</label>
+						<input
+							type="text"
+							class="field"
+							id="qrInput"
+							placeholder="https:// или любой текст"
+							value="https://example.com" />
+
+						<label>🏷 Подпись (необязательно)</label>
+						<input
+							type="text"
+							class="field"
+							id="qrLabel"
+							placeholder="Например, визитка" />
+
+						<div class="qr-options">
+							<label style="margin-right: 0.5rem">📐 Размер</label>
+							<select id="sizeSelect" class="size-select">
+								<option value="120">120x120</option>
+								<option value="160" selected>160x160</option>
+								<option value="200">200x200</option>
+								<option value="250">250x250</option>
+							</select>
+						</div>
+						<button class="generate-btn" id="generateBtn">
+							🔄 Сгенерировать QR
+						</button>
+					</div>
+
+					<div class="qr-preview">
+						<div id="qr-container">
+							<div id="qr-placeholder" class="qr-placeholder">
+								⌛ QR появится здесь
+							</div>
+						</div>
+						<button class="save-btn" id="saveQrBtn" disabled>
+							💾 Сохранить в историю
+						</button>
+						<button class="share-btn" id="shareCurrentBtn" disabled>
+							📤 Поделиться текущим
+						</button>
+						<p style="font-size: 0.7rem; margin-top: 0.8rem; color: #5b7aa3">
+							* сохраняется в localStorage
+						</p>
+					</div>
+				</div>
+
+				<!-- История -->
+				<div class="history-header">
+					<h3>📋 История QR-кодов (нажмите для просмотра)</h3>
+					<button class="clear-history" id="clearHistoryBtn">
+						Очистить историю
+					</button>
+				</div>
+				<div id="historyContainer" class="history-grid"></div>
+				<div class="footer-note">
+					✦ Вы авторизованы как admin, данные сохраняются в браузере
+				</div>
+			</div>
+		</div>
+
+		<script>
+			;(function () {
+				// Элементы страниц
+				const loginPage = document.getElementById('loginPage')
+				const mainApp = document.getElementById('mainApp')
+				const loginBtn = document.getElementById('loginButton')
+				const loginError = document.getElementById('loginError')
+				const usernameField = document.getElementById('loginUsername')
+				const passwordField = document.getElementById('loginPassword')
+				const logoutBtn = document.getElementById('logoutButton')
+
+				// Элементы основного приложения
+				const qrInput = document.getElementById('qrInput')
+				const qrLabel = document.getElementById('qrLabel')
+				const sizeSelect = document.getElementById('sizeSelect')
+				const generateBtn = document.getElementById('generateBtn')
+				const saveBtn = document.getElementById('saveQrBtn')
+				const shareCurrentBtn = document.getElementById('shareCurrentBtn')
+				const qrContainer = document.getElementById('qr-container')
+				const historyDiv = document.getElementById('historyContainer')
+				const clearHistoryBtn = document.getElementById('clearHistoryBtn')
+				const scanBtn = document.getElementById('scanBtn')
+
+				// Элементы модального окна
+				const modalOverlay = document.getElementById('modalOverlay')
+				const modalCloseBtn = document.getElementById('modalCloseBtn')
+				const modalQrContainer = document.getElementById('modalQrContainer')
+				const modalLink = document.getElementById('modalLink')
+				const modalCaption = document.getElementById('modalCaption')
+				const modalUseBtn = document.getElementById('modalUseBtn')
+				const modalShareBtn = document.getElementById('modalShareBtn')
+				const modalTitle = document.getElementById('modalTitle')
+
+				// Элементы сканера
+				const scannerOverlay = document.getElementById('scannerOverlay')
+				const scannerCloseBtn = document.getElementById('scannerCloseBtn')
+				const scanResult = document.getElementById('scanResult')
+				const useScannedBtn = document.getElementById('useScannedBtn')
+				const toggleCameraBtn = document.getElementById('toggleCameraBtn')
+
+				// Переменные состояния
+				let currentQRValue = ''
+				let currentQRSize = 160
+				let currentQRCodeObj = null
+				let history = []
+				let currentModalItem = null
+				let html5QrCode = null
+				let lastScannedText = ''
+				let currentCamera = 'environment' // 'environment' - задняя, 'user' - фронтальная
+
+				// Проверка авторизации
+				function checkAuth() {
+					const isAuth = sessionStorage.getItem('qr_auth') === 'true'
+					if (isAuth) {
+						loginPage.style.display = 'none'
+						mainApp.style.display = 'block'
+						loadHistory()
+						setTimeout(() => generateQR(), 50)
+					} else {
+						loginPage.style.display = 'block'
+						mainApp.style.display = 'none'
+					}
+				}
+
+				// Вход
+				loginBtn.addEventListener('click', () => {
+					const login = usernameField.value.trim()
+					const pass = passwordField.value.trim()
+
+					if (login === 'admin' && pass === '123') {
+						sessionStorage.setItem('qr_auth', 'true')
+						loginError.style.display = 'none'
+						checkAuth()
+					} else {
+						loginError.style.display = 'block'
+					}
+				})
+
+				// Выход
+				logoutBtn.addEventListener('click', () => {
+					sessionStorage.removeItem('qr_auth')
+					checkAuth()
+					usernameField.value = 'admin'
+					passwordField.value = '123'
+				})
+
+				// Загрузка истории
+				function loadHistory() {
+					try {
+						const stored = localStorage.getItem('qr_history_admin')
+						history = stored ? JSON.parse(stored) : []
+					} catch (e) {
+						history = []
+					}
+					renderHistory()
+				}
+
+				function saveHistoryToStorage() {
+					localStorage.setItem('qr_history_admin', JSON.stringify(history))
+				}
+
+				// Рендер истории
+				function renderHistory() {
+					if (!historyDiv) return
+					if (history.length === 0) {
+						historyDiv.innerHTML =
+							'<div class="empty-history">✨ пока нет сохранённых QR-кодов</div>'
+						return
+					}
+					const sorted = [...history].sort(
+						(a, b) => new Date(b.date) - new Date(a.date)
+					)
+					let html = ''
+					sorted.forEach(item => {
+						const dateStr = new Date(item.date).toLocaleString('ru-RU', {
+							day: '2-digit',
+							month: '2-digit',
+							hour: '2-digit',
+							minute: '2-digit'
+						})
+						html += `<div class="history-item" data-id="${item.id}">
+                        <div class="history-qr" id="hist-qr-${item.id}"></div>
+                        <span class="history-label" title="${item.label || item.value}">${item.label || item.value.substring(0, 18)}${item.value.length > 18 ? '…' : ''}</span>
+                        <span class="history-date">${dateStr}</span>
+                    </div>`
+					})
+					historyDiv.innerHTML = html
+
+					sorted.forEach(item => {
+						const container = document.getElementById(`hist-qr-${item.id}`)
+						if (container) {
+							try {
+								container.innerHTML = ''
+								new QRCode(container, {
+									text: item.value,
+									width: 70,
+									height: 70,
+									colorDark: '#1f3857',
+									colorLight: '#ffffff',
+									correctLevel: QRCode.CorrectLevel.M
+								})
+							} catch (e) {
+								container.innerText = '⛔'
+							}
+						}
+					})
+
+					// Добавляем обработчики на history-item для открытия модалки
+					document.querySelectorAll('.history-item').forEach(item => {
+						item.addEventListener('click', e => {
+							const id = Number(item.dataset.id)
+							const found = history.find(h => h.id === id)
+							if (found) {
+								openModal(found)
+							}
+						})
+					})
+				}
+
+				// Генерация основного QR
+				function generateQR() {
+					const text = qrInput.value.trim()
+					if (!text) {
+						alert('Введите текст')
+						return
+					}
+					currentQRValue = text
+					currentQRSize = parseInt(sizeSelect.value, 10)
+					qrContainer.innerHTML = ''
+					const newQrDiv = document.createElement('div')
+					newQrDiv.id = 'qr-live'
+					qrContainer.appendChild(newQrDiv)
+
+					try {
+						currentQRCodeObj = new QRCode(newQrDiv, {
+							text: text,
+							width: currentQRSize,
+							height: currentQRSize,
+							colorDark: '#1c2f4c',
+							colorLight: '#ffffff',
+							correctLevel: QRCode.CorrectLevel.H
+						})
+						saveBtn.disabled = false
+						shareCurrentBtn.disabled = false
+					} catch (e) {
+						qrContainer.innerHTML =
+							'<div class="qr-placeholder">Ошибка генерации</div>'
+						saveBtn.disabled = true
+						shareCurrentBtn.disabled = true
+					}
+				}
+
+				// Сохранение в историю
+				function saveCurrentQrToHistory() {
+					if (!currentQRValue) {
+						alert('Сгенерируйте QR')
+						return
+					}
+					const label = qrLabel.value.trim() || currentQRValue.substring(0, 30)
+					const newEntry = {
+						id: Date.now() + Math.floor(Math.random() * 1000),
+						value: currentQRValue,
+						label: label,
+						size: currentQRSize,
+						date: new Date().toISOString(),
+						user: 'admin'
+					}
+					history.push(newEntry)
+					saveHistoryToStorage()
+					renderHistory()
+				}
+
+				// Очистка истории
+				function clearHistory() {
+					if (history.length > 0 && confirm('Удалить всю историю?')) {
+						history = []
+						saveHistoryToStorage()
+						renderHistory()
+					}
+				}
+
+				// Поделиться текущим QR
+				function shareCurrent() {
+					if (!currentQRValue) return
+
+					if (navigator.share) {
+						navigator
+							.share({
+								title: 'Мой QR-код',
+								text: qrLabel.value || currentQRValue,
+								url: currentQRValue.startsWith('http')
+									? currentQRValue
+									: undefined
+							})
+							.catch(() => {
+								// Если отмена или ошибка - показываем альтернативу
+								fallbackShare()
+							})
+					} else {
+						fallbackShare()
+					}
+				}
+
+				function fallbackShare() {
+					const tempItem = {
+						value: currentQRValue,
+						label: qrLabel.value || 'Текущий QR',
+						size: currentQRSize
+					}
+					openModal(tempItem, true)
+				}
+
+				// ОТКРЫТИЕ МОДАЛЬНОГО ОКНА
+				function openModal(item, isCurrent = false) {
+					currentModalItem = item
+					modalTitle.textContent = isCurrent
+						? 'Текущий QR-код'
+						: 'QR-код из истории'
+
+					modalQrContainer.innerHTML = ''
+					const qrDiv = document.createElement('div')
+					modalQrContainer.appendChild(qrDiv)
+
+					try {
+						new QRCode(qrDiv, {
+							text: item.value,
+							width: 250,
+							height: 250,
+							colorDark: '#1c2f4c',
+							colorLight: '#ffffff',
+							correctLevel: QRCode.CorrectLevel.H
+						})
+					} catch (e) {
+						modalQrContainer.innerHTML =
+							'<div style="padding:2rem;">Ошибка загрузки QR</div>'
+					}
+
+					modalLink.textContent = item.value
+					modalCaption.textContent = item.label || '— без подписи —'
+
+					modalOverlay.style.display = 'flex'
+				}
+
+				// Закрытие модального окна
+				function closeModal() {
+					modalOverlay.style.display = 'none'
+					currentModalItem = null
+				}
+
+				// Использовать в генераторе
+				function useInGenerator() {
+					if (currentModalItem) {
+						qrInput.value = currentModalItem.value
+						qrLabel.value = currentModalItem.label || ''
+						const sizeOption = [...sizeSelect.options].find(
+							opt => Number(opt.value) === currentModalItem.size
+						)
+						if (sizeOption) sizeSelect.value = currentModalItem.size
+						generateQR()
+						closeModal()
+					}
+				}
+
+				// Поделиться из модалки
+				function shareFromModal() {
+					if (!currentModalItem) return
+
+					if (navigator.share) {
+						navigator
+							.share({
+								title: 'QR-код',
+								text: currentModalItem.label || currentModalItem.value,
+								url: currentModalItem.value.startsWith('http')
+									? currentModalItem.value
+									: undefined
+							})
+							.catch(() => {
+								alert('Скопировано в буфер обмена: ' + currentModalItem.value)
+								copyToClipboard(currentModalItem.value)
+							})
+					} else {
+						alert('Скопировано в буфер обмена: ' + currentModalItem.value)
+						copyToClipboard(currentModalItem.value)
+					}
+				}
+
+				// Копирование в буфер
+				function copyToClipboard(text) {
+					const textarea = document.createElement('textarea')
+					textarea.value = text
+					document.body.appendChild(textarea)
+					textarea.select()
+					document.execCommand('copy')
+					document.body.removeChild(textarea)
+				}
+
+				// Сканирование QR с отзеркаливанием
+				async function startScanner() {
+					scannerOverlay.style.display = 'flex'
+					scanResult.style.display = 'none'
+					useScannedBtn.style.display = 'none'
+					lastScannedText = ''
+
+					// Показываем индикатор загрузки
+					scanResult.style.display = 'block'
+					scanResult.textContent = '⏳ Запуск камеры...'
+
+					// Останавливаем предыдущий сканер если был
+					if (html5QrCode) {
+						try {
+							await html5QrCode.stop()
+						} catch (e) {}
+					}
+
+					html5QrCode = new Html5Qrcode('reader')
+
+					// Настройки камеры - используем текущую выбранную камеру
+					const config = {
+						fps: 10,
+						qrbox: { width: 250, height: 250 },
+						aspectRatio: 1.0
+					}
+
+					try {
+						await html5QrCode.start(
+							{ facingMode: currentCamera },
+							config,
+							onScanSuccess,
+							onScanError
+						)
+
+						// Применяем отзеркаливание к видео через CSS
+						const videoElement = document.querySelector('#reader video')
+						if (videoElement) {
+							// Для задней камеры (environment) отзеркаливание не нужно
+							// Для фронтальной (user) нужно отзеркалить для привычного селфи-режима
+							if (currentCamera === 'user') {
+								videoElement.style.transform = 'scaleX(-1)'
+							} else {
+								videoElement.style.transform = 'scaleX(1)'
+							}
+						}
+
+						scanResult.style.display = 'none'
+					} catch (err) {
+						console.error('Scan start error:', err)
+						scanResult.style.display = 'block'
+						scanResult.textContent =
+							'❌ Ошибка доступа к камере. Проверьте разрешения.'
+					}
+				}
+
+				function onScanSuccess(decodedText, decodedResult) {
+					lastScannedText = decodedText
+					scanResult.style.display = 'block'
+					scanResult.textContent = '✅ Найдено: ' + decodedText
+					useScannedBtn.style.display = 'block'
+
+					// Останавливаем сканер через 1.5 секунды после успеха
+					setTimeout(() => {
+						if (html5QrCode) {
+							html5QrCode.pause()
+						}
+					}, 1500)
+				}
+
+				function onScanError(error) {
+					// Игнорируем ошибки - они постоянно возникают при поиске
+				}
+
+				async function stopScanner() {
+					if (html5QrCode) {
+						try {
+							await html5QrCode.stop()
+							html5QrCode = null
+						} catch (e) {
+							console.log(e)
+						}
+					}
+					scannerOverlay.style.display = 'none'
+				}
+
+				function useScannedText() {
+					if (lastScannedText) {
+						qrInput.value = lastScannedText
+						generateQR()
+						stopScanner()
+					}
+				}
+
+				// Переключение камеры
+				async function toggleCamera() {
+					// Меняем камеру
+					currentCamera =
+						currentCamera === 'environment' ? 'user' : 'environment'
+
+					// Перезапускаем сканер с новой камерой
+					if (html5QrCode) {
+						try {
+							await html5QrCode.stop()
+							await startScanner()
+						} catch (e) {
+							console.error('Error toggling camera:', e)
+						}
+					}
+				}
+
+				// Обработчики модального окна
+				modalCloseBtn.addEventListener('click', closeModal)
+				modalOverlay.addEventListener('click', e => {
+					if (e.target === modalOverlay) closeModal()
+				})
+				modalUseBtn.addEventListener('click', useInGenerator)
+				modalShareBtn.addEventListener('click', shareFromModal)
+
+				// Обработчики сканера
+				scanBtn.addEventListener('click', startScanner)
+				scannerCloseBtn.addEventListener('click', stopScanner)
+				useScannedBtn.addEventListener('click', useScannedText)
+				toggleCameraBtn.addEventListener('click', toggleCamera)
+				scannerOverlay.addEventListener('click', e => {
+					if (e.target === scannerOverlay) stopScanner()
+				})
+
+				// Закрытие по Escape
+				document.addEventListener('keydown', e => {
+					if (e.key === 'Escape') {
+						if (modalOverlay.style.display === 'flex') closeModal()
+						if (scannerOverlay.style.display === 'flex') stopScanner()
+					}
+				})
+
+				// Обработчики основного интерфейса
+				generateBtn.addEventListener('click', generateQR)
+				saveBtn.addEventListener('click', saveCurrentQrToHistory)
+				clearHistoryBtn.addEventListener('click', clearHistory)
+				shareCurrentBtn.addEventListener('click', shareCurrent)
+
+				// Enter в полях
+				document.querySelectorAll('.field').forEach(inp => {
+					inp.addEventListener('keypress', e => {
+						if (e.key === 'Enter') generateQR()
+					})
+				})
+
+				// Enter на странице входа
+				passwordField.addEventListener('keypress', e => {
+					if (e.key === 'Enter') loginBtn.click()
+				})
+				usernameField.addEventListener('keypress', e => {
+					if (e.key === 'Enter') loginBtn.click()
+				})
+
+				// Инициализация
+				checkAuth()
+			})()
+		</script>
+	</body>
+</html>
