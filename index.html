@@ -937,7 +937,7 @@
 
 				<div class="constructor">
 					<div class="input-panel">
-						<label>Текст / ссылка</label>
+						<label>Текст / ссылка для создания QR</label>
 						<input
 							type="text"
 							class="field"
@@ -1086,7 +1086,7 @@
 					if (!historyDiv) return
 					if (history.length === 0) {
 						historyDiv.innerHTML =
-							'<div class="empty-history">✨ пока нет сохранённых QR-кодов</div>'
+							'<div class="empty-history">Пока нет сохранённых QR-кодов</div>'
 						return
 					}
 					const sorted = [...history].sort(
@@ -1141,7 +1141,6 @@
 				function generateQR() {
 					const text = qrInput.value.trim()
 					if (!text) {
-						alert('Введите текст')
 						return
 					}
 					currentQRValue = text
