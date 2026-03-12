@@ -5,8 +5,7 @@
 		<meta
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-		<title>QR генератор ✦ мобильная версия</title>
-		<!-- QrCode.js library + html5-qrcode для сканера -->
+		<title>QR генератор ✦</title>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 		<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -36,7 +35,6 @@
 				justify-content: center;
 				padding: 0.5rem;
 			}
-			/* СТРАНИЦА ВХОДА - мобильная оптимизация */
 			.login-container {
 				background: rgba(255, 255, 255, 0.75);
 				backdrop-filter: blur(14px);
@@ -111,7 +109,6 @@
 				border-radius: 3rem;
 			}
 
-			/* ОСНОВНОЙ ИНТЕРФЕЙС - полностью адаптивный */
 			.main-app {
 				display: none;
 				width: 100%;
@@ -134,7 +131,7 @@
 				font-size: 1.8rem;
 				font-weight: 600;
 				letter-spacing: -0.02em;
-				background: linear-gradient(135deg, #1d2b3e, #2c3f5c);
+				background: black;
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;
 				background-clip: text;
@@ -153,7 +150,6 @@
 				padding-left: 0.7rem;
 			}
 
-			/* Блок пользователя - компактный на мобильных */
 			.auth-bar {
 				background: rgba(255, 255, 255, 0.5);
 				border-radius: 2rem;
@@ -164,7 +160,8 @@
 				flex-wrap: wrap;
 				gap: 0.5rem;
 				margin-bottom: 1.5rem;
-				border: 1px solid rgba(255, 255, 255, 0.9);
+				border: 1px solid rgb(207 207 207 / 90%);
+				box-shadow: 0 5px 15px -10px #000000;
 			}
 			.user-info {
 				display: flex;
@@ -174,7 +171,7 @@
 			.avatar {
 				width: 40px;
 				height: 40px;
-				background: linear-gradient(125deg, #3f5e8c, #638ecb);
+				background: white;
 				border-radius: 50%;
 				display: flex;
 				align-items: center;
@@ -188,7 +185,7 @@
 			}
 			.user-text .name {
 				font-size: 1rem;
-				color: #1e2c3f;
+				color: #000000;
 				font-weight: 600;
 			}
 			.user-text .badge {
@@ -203,12 +200,12 @@
 			}
 			.logout-btn {
 				background: transparent;
-				border: 1px solid #b9cae0;
+				border: 1px solid rgb(207 207 207 / 90%);
 				border-radius: 2rem;
 				padding: 0.4rem 1rem;
 				font-size: 0.8rem;
 				font-weight: 500;
-				color: #3a4f6e;
+				color: #000000;
 				cursor: pointer;
 				transition: 0.1s;
 				-webkit-tap-highlight-color: transparent;
@@ -217,7 +214,6 @@
 				background: rgba(255, 255, 255, 0.8);
 			}
 
-			/* Панель инструментов - адаптивные кнопки */
 			.toolbar {
 				display: flex;
 				gap: 0.8rem;
@@ -225,30 +221,29 @@
 				flex-wrap: wrap;
 			}
 			.tool-btn {
-				background: rgba(255, 255, 255, 0.6);
-				border: 1px solid rgba(255, 255, 255, 0.9);
+				background: black;
+				border: 1px solid rgb(207 207 207 / 90%);
+				box-shadow: 0 5px 15px -10px #000000;
 				border-radius: 2rem;
 				padding: 0.7rem 1.2rem;
 				font-weight: 600;
 				font-size: 0.9rem;
-				color: #1e3a5e;
+				color: #ffffff;
 				cursor: pointer;
 				transition: 0.15s;
 				display: inline-flex;
 				align-items: center;
 				gap: 0.4rem;
-				backdrop-filter: blur(5px);
-				-webkit-backdrop-filter: blur(5px);
 				flex: 1 1 auto;
 				justify-content: center;
 				-webkit-tap-highlight-color: transparent;
 			}
 			.tool-btn:active {
-				background: white;
+				background: #c7c7c7;
+				color: #000;
 				transform: translateY(-1px);
 			}
 
-			/* Конструктор - вертикальный на мобильных */
 			.constructor {
 				display: flex;
 				flex-direction: column;
@@ -267,7 +262,7 @@
 			.input-panel label {
 				font-weight: 600;
 				font-size: 0.8rem;
-				color: #2e456e;
+				color: #000000;
 				display: block;
 				margin-bottom: 0.3rem;
 				margin-left: 0.3rem;
@@ -282,29 +277,32 @@
 				margin-bottom: 1rem;
 				outline: none;
 				-webkit-appearance: none;
+				border: 1px solid rgb(207 207 207 / 90%);
+				box-shadow: 0 5px 15px -10px #000000;
 			}
 			.qr-options {
 				display: flex;
-				gap: 0.8rem;
-				align-items: center;
+				flex-direction: column;
+
 				flex-wrap: wrap;
-				margin: 0.8rem 0 0.5rem;
+				margin: 0rem 0 0.5rem;
 			}
 			.qr-options label {
 				margin-right: 0;
 			}
 			.size-select {
 				background: white;
-				border: 1px solid #cddef5;
 				border-radius: 1.8rem;
 				padding: 0.5rem 1rem;
 				font-weight: 500;
 				font-size: 0.9rem;
-				color: #1e3a5e;
+				color: black;
 				flex: 1;
+				border: 1px solid rgb(207 207 207 / 90%);
+				box-shadow: 0 5px 15px -10px #000000;
 			}
 			.generate-btn {
-				background: #1f3c68;
+				background: #000000;
 				border: none;
 				border-radius: 2rem;
 				padding: 0.8rem 1.5rem;
@@ -312,7 +310,8 @@
 				font-size: 1rem;
 				color: white;
 				cursor: pointer;
-				box-shadow: 0 12px 18px -10px #1f3c68;
+				box-shadow: 0 5px 15px -10px #000000;
+
 				transition: all 0.2s;
 				display: inline-flex;
 				align-items: center;
@@ -322,11 +321,11 @@
 				-webkit-tap-highlight-color: transparent;
 			}
 			.generate-btn:active {
-				background: #254e86;
+				background: #c7c7c7;
+				color: #000;
 				transform: translateY(-1px);
 			}
 
-			/* Превью QR - компактное */
 			.qr-preview {
 				background: white;
 				border-radius: 1.5rem;
@@ -365,19 +364,18 @@
 			.qr-placeholder {
 				width: 160px;
 				height: 160px;
-				background: #f2f6fd;
+				background: #d8d6d6;
 				border-radius: 1.2rem;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				color: #7a95bb;
+				color: #414040;
 				font-weight: 500;
 				font-size: 0.9rem;
 				text-align: center;
 				padding: 1rem;
 			}
 
-			/* Кнопки действий - адаптивные */
 			.action-buttons {
 				display: flex;
 				gap: 0.8rem;
@@ -401,14 +399,14 @@
 				-webkit-tap-highlight-color: transparent;
 			}
 			.save-btn {
-				background: #dce7f5;
+				background: #d8d6d6;
 				border: 1px solid white;
-				color: #1d3b62;
+				color: #414040;
 			}
 			.share-btn {
-				background: #e3eaf3;
+				background: #d8d6d6;
 				border: 1px solid white;
-				color: #1d3b62;
+				color: #414040;
 			}
 			.save-btn:not(:disabled):active,
 			.share-btn:not(:disabled):active {
@@ -421,7 +419,6 @@
 				cursor: not-allowed;
 			}
 
-			/* История - адаптивная сетка */
 			.history-header {
 				display: flex;
 				align-items: center;
@@ -432,21 +429,32 @@
 			}
 			.history-header h3 {
 				font-weight: 600;
-				color: #1e385c;
+				color: #000000;
 				font-size: 1.1rem;
 			}
 			.clear-history {
-				background: none;
-				border: 1px solid #b3c7e2;
+				background: #000000;
+				border: none;
 				border-radius: 2rem;
-				padding: 0.3rem 1rem;
-				font-size: 0.8rem;
-				color: #4b658f;
+				padding: 0.8rem 1.5rem;
+				font-weight: 600;
+				font-size: 1rem;
+				color: white;
 				cursor: pointer;
+				box-shadow: 0 5px 15px -10px #000000;
+
+				transition: all 0.2s;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				width: 100%;
+				justify-content: center;
 				-webkit-tap-highlight-color: transparent;
 			}
 			.clear-history:active {
-				background: rgba(255, 255, 255, 0.6);
+				background: #c7c7c7;
+				color: #000;
+				transform: translateY(-1px);
 			}
 			.history-grid {
 				display: grid;
@@ -495,7 +503,7 @@
 			.history-label {
 				font-size: 0.65rem;
 				font-weight: 500;
-				color: #1f3450;
+				color: #000000;
 				max-width: 90px;
 				overflow: hidden;
 				white-space: nowrap;
@@ -503,7 +511,7 @@
 			}
 			.history-date {
 				font-size: 0.55rem;
-				color: #687ea2;
+				color: #000000;
 			}
 			.empty-history {
 				color: #6d84a8;
@@ -523,7 +531,6 @@
 				padding-top: 0.8rem;
 			}
 
-			/* МОДАЛЬНОЕ ОКНО - адаптивное */
 			.modal-overlay {
 				display: none;
 				position: fixed;
@@ -587,7 +594,7 @@
 			.modal-title {
 				font-size: 1.4rem;
 				font-weight: 600;
-				color: #1d2b3e;
+				color: #000000;
 				margin-bottom: 1.2rem;
 				padding-right: 2rem;
 			}
@@ -600,7 +607,7 @@
 				margin-bottom: 1.2rem;
 				box-shadow:
 					inset 0 2px 10px rgba(0, 0, 0, 0.02),
-					0 10px 20px -10px #30547b;
+					0 10px 20px -10px #000000;
 			}
 			.modal-qr-container canvas,
 			.modal-qr-container img {
@@ -610,26 +617,27 @@
 				max-height: 200px;
 			}
 			.modal-link {
-				background: #eef3fc;
+				background: #ffffff;
 				border-radius: 1.5rem;
 				padding: 0.8rem 1rem;
 				word-break: break-all;
 				font-size: 0.85rem;
-				color: #1e3b64;
-				border: 1px solid #cddef5;
+				color: #000000;
+				border: 1px solid #808080;
 				margin-bottom: 0.8rem;
 				font-weight: 500;
 			}
 			.modal-link-label {
 				font-size: 0.75rem;
-				color: #5a77a0;
+				color: #000000;
 				margin-bottom: 0.2rem;
 				margin-left: 0.3rem;
 			}
 			.modal-caption {
 				font-size: 1rem;
-				color: #1f3857;
-				background: rgba(200, 220, 245, 0.4);
+				color: #000000;
+				background: rgba(255, 255, 255, 0.4);
+				border: 1px solid #808080;
 				padding: 0.6rem 1.2rem;
 				border-radius: 1.5rem;
 				font-weight: 500;
@@ -643,34 +651,34 @@
 				margin-top: 1.2rem;
 				flex-wrap: wrap;
 			}
+
 			.modal-action-btn,
 			.modal-share-btn {
-				padding: 0.7rem 1.5rem;
-				font-size: 0.9rem;
-				border-radius: 2rem;
-				font-weight: 600;
-				cursor: pointer;
-				transition: 0.15s;
+				background: #000000;
 				border: none;
-				flex: 1;
-				min-width: 120px;
-				-webkit-tap-highlight-color: transparent;
-			}
-			.modal-action-btn {
-				background: #1f3c68;
+				border-radius: 2rem;
+				padding: 0.8rem 1.5rem;
+				font-weight: 600;
+				font-size: 1rem;
 				color: white;
-			}
-			.modal-share-btn {
-				background: #dce7f5;
-				color: #1d3b62;
-				border: 1px solid white;
+				cursor: pointer;
+				box-shadow: 0 5px 15px -10px #000000;
+
+				transition: all 0.2s;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				width: 100%;
+				justify-content: center;
+				-webkit-tap-highlight-color: transparent;
 			}
 			.modal-action-btn:active,
 			.modal-share-btn:active {
-				transform: scale(0.97);
+				background: #c7c7c7;
+				color: #000;
+				transform: translateY(-1px);
 			}
 
-			/* СКАНЕР С ОТЗЕРКАЛИВАНИЕМ - мобильная оптимизация */
 			.scanner-overlay {
 				display: none;
 				position: fixed;
@@ -725,7 +733,6 @@
 				background: rgba(255, 255, 255, 0.2);
 			}
 
-			/* Контейнер для видео с отзеркаливанием */
 			.scanner-view {
 				position: relative;
 				width: 100%;
@@ -748,7 +755,6 @@
 				border-radius: 1.5rem;
 			}
 
-			/* Адаптация для разных камер */
 			#reader video {
 				transform: scaleX(1);
 			}
@@ -802,14 +808,12 @@
 				background: rgba(255, 255, 255, 0.3);
 			}
 
-			/* Улучшения для touch устройств */
 			button,
 			.history-item,
 			.tool-btn {
 				touch-action: manipulation;
 			}
 
-			/* Адаптация для очень маленьких экранов */
 			@media (max-width: 380px) {
 				.glass-card {
 					padding: 1rem 0.8rem 1.2rem;
@@ -838,7 +842,6 @@
 		</style>
 	</head>
 	<body>
-		<!-- МОДАЛЬНОЕ ОКНО -->
 		<div id="modalOverlay" class="modal-overlay">
 			<div class="modal-content">
 				<button class="modal-close" id="modalCloseBtn">&times;</button>
@@ -849,9 +852,7 @@
 				<div class="modal-link-label">🏷 Подпись:</div>
 				<div id="modalCaption" class="modal-caption"></div>
 				<div class="modal-footer">
-					<button class="modal-share-btn" id="modalShareBtn">
-						📤 Поделиться
-					</button>
+					<button class="modal-share-btn" id="modalShareBtn">Поделиться</button>
 					<button class="modal-action-btn" id="modalUseBtn">
 						Использовать
 					</button>
@@ -859,7 +860,6 @@
 			</div>
 		</div>
 
-		<!-- СКАНЕР С ОТЗЕРКАЛИВАНИЕМ -->
 		<div id="scannerOverlay" class="scanner-overlay">
 			<div class="scanner-container">
 				<div class="scanner-header">
@@ -867,14 +867,12 @@
 					<button class="scanner-close" id="scannerCloseBtn">&times;</button>
 				</div>
 
-				<!-- Контейнер с отзеркаливанием -->
 				<div class="scanner-view">
 					<div id="reader"></div>
 				</div>
 
-				<!-- Кнопка переключения камеры -->
 				<button class="camera-toggle" id="toggleCameraBtn">
-					🔄 Переключить камеру
+					Переключить камеру
 				</button>
 
 				<div id="scanResult" class="scan-result" style="display: none"></div>
@@ -887,9 +885,8 @@
 			</div>
 		</div>
 
-		<!-- СТРАНИЦА ВХОДА -->
 		<div id="loginPage" class="login-container">
-			<h1>🔐 QR Access</h1>
+			<h1>QR Access</h1>
 			<div class="login-sub">войдите для создания персональных QR</div>
 			<input
 				type="text"
@@ -912,7 +909,6 @@
 			</div>
 		</div>
 
-		<!-- ОСНОВНОЕ ПРИЛОЖЕНИЕ -->
 		<div id="mainApp" class="main-app">
 			<div class="glass-card">
 				<div
@@ -922,47 +918,33 @@
 						align-items: baseline;
 					">
 					<h1>✦ QR PERSCAN</h1>
-					<span
-						style="
-							font-size: 0.7rem;
-							background: rgba(0, 0, 0, 0.02);
-							padding: 0.2rem 0.8rem;
-							border-radius: 30px;
-						"
-						>mobile</span
-					>
 				</div>
 				<div class="sub">создавай, сканируй и делись QR-кодами</div>
 
-				<!-- Блок пользователя -->
 				<div class="auth-bar">
 					<div class="user-info">
 						<div class="avatar" id="adminAvatar">👨‍💼</div>
 						<div class="user-text">
 							<span class="name" id="adminName">admin</span>
-							<div class="badge">администратор</div>
 						</div>
 					</div>
 					<button class="logout-btn" id="logoutButton">Выйти</button>
 				</div>
 
-				<!-- Панель инструментов -->
 				<div class="toolbar">
-					<button class="tool-btn" id="scanBtn">📷 Сканировать QR</button>
+					<button class="tool-btn" id="scanBtn">Сканировать QR</button>
 				</div>
 
-				<!-- Генератор QR -->
 				<div class="constructor">
 					<div class="input-panel">
-						<label>📇 Текст / ссылка</label>
+						<label>Текст / ссылка</label>
 						<input
 							type="text"
 							class="field"
 							id="qrInput"
-							placeholder="https:// или любой текст"
-							value="https://example.com" />
+							placeholder="https:// или любой текст" />
 
-						<label>🏷 Подпись (необязательно)</label>
+						<label>Подпись (необязательно)</label>
 						<input
 							type="text"
 							class="field"
@@ -970,7 +952,7 @@
 							placeholder="Например, визитка" />
 
 						<div class="qr-options">
-							<label>📐 Размер</label>
+							<label> Размер</label>
 							<select id="sizeSelect" class="size-select">
 								<option value="120">120x120</option>
 								<option value="160" selected>160x160</option>
@@ -979,43 +961,37 @@
 							</select>
 						</div>
 						<button class="generate-btn" id="generateBtn">
-							🔄 Сгенерировать QR
+							Сгенерировать QR
 						</button>
 					</div>
 
 					<div class="qr-preview">
 						<div id="qr-container">
 							<div id="qr-placeholder" class="qr-placeholder">
-								⌛ QR появится здесь
+								QR появится здесь
 							</div>
 						</div>
 						<div class="action-buttons">
 							<button class="save-btn" id="saveQrBtn" disabled>
-								💾 Сохранить
+								Сохранить
 							</button>
 							<button class="share-btn" id="shareCurrentBtn" disabled>
-								📤 Поделиться
+								Поделиться
 							</button>
 						</div>
-						<p style="font-size: 0.65rem; margin-top: 0.6rem; color: #5b7aa3">
-							* сохраняется в localStorage
-						</p>
 					</div>
 				</div>
 
-				<!-- История -->
 				<div class="history-header">
-					<h3>📋 История QR</h3>
-					<button class="clear-history" id="clearHistoryBtn">Очистить</button>
+					<h3>История QR</h3>
 				</div>
 				<div id="historyContainer" class="history-grid"></div>
-				<div class="footer-note">✦ Вы авторизованы как admin</div>
+				<button class="clear-history" id="clearHistoryBtn">Очистить</button>
 			</div>
 		</div>
 
 		<script>
 			;(function () {
-				// Элементы страниц
 				const loginPage = document.getElementById('loginPage')
 				const mainApp = document.getElementById('mainApp')
 				const loginBtn = document.getElementById('loginButton')
@@ -1024,7 +1000,6 @@
 				const passwordField = document.getElementById('loginPassword')
 				const logoutBtn = document.getElementById('logoutButton')
 
-				// Элементы основного приложения
 				const qrInput = document.getElementById('qrInput')
 				const qrLabel = document.getElementById('qrLabel')
 				const sizeSelect = document.getElementById('sizeSelect')
@@ -1036,7 +1011,6 @@
 				const clearHistoryBtn = document.getElementById('clearHistoryBtn')
 				const scanBtn = document.getElementById('scanBtn')
 
-				// Элементы модального окна
 				const modalOverlay = document.getElementById('modalOverlay')
 				const modalCloseBtn = document.getElementById('modalCloseBtn')
 				const modalQrContainer = document.getElementById('modalQrContainer')
@@ -1046,14 +1020,12 @@
 				const modalShareBtn = document.getElementById('modalShareBtn')
 				const modalTitle = document.getElementById('modalTitle')
 
-				// Элементы сканера
 				const scannerOverlay = document.getElementById('scannerOverlay')
 				const scannerCloseBtn = document.getElementById('scannerCloseBtn')
 				const scanResult = document.getElementById('scanResult')
 				const useScannedBtn = document.getElementById('useScannedBtn')
 				const toggleCameraBtn = document.getElementById('toggleCameraBtn')
 
-				// Переменные состояния
 				let currentQRValue = ''
 				let currentQRSize = 160
 				let currentQRCodeObj = null
@@ -1063,7 +1035,6 @@
 				let lastScannedText = ''
 				let currentCamera = 'environment'
 
-				// Проверка авторизации
 				function checkAuth() {
 					const isAuth = sessionStorage.getItem('qr_auth') === 'true'
 					if (isAuth) {
@@ -1077,7 +1048,6 @@
 					}
 				}
 
-				// Вход
 				loginBtn.addEventListener('click', () => {
 					const login = usernameField.value.trim()
 					const pass = passwordField.value.trim()
@@ -1091,7 +1061,6 @@
 					}
 				})
 
-				// Выход
 				logoutBtn.addEventListener('click', () => {
 					sessionStorage.removeItem('qr_auth')
 					checkAuth()
@@ -1099,7 +1068,6 @@
 					passwordField.value = '123'
 				})
 
-				// Загрузка истории
 				function loadHistory() {
 					try {
 						const stored = localStorage.getItem('qr_history_admin')
@@ -1114,7 +1082,6 @@
 					localStorage.setItem('qr_history_admin', JSON.stringify(history))
 				}
 
-				// Рендер истории
 				function renderHistory() {
 					if (!historyDiv) return
 					if (history.length === 0) {
@@ -1171,7 +1138,6 @@
 					})
 				}
 
-				// Генерация основного QR
 				function generateQR() {
 					const text = qrInput.value.trim()
 					if (!text) {
@@ -1204,7 +1170,6 @@
 					}
 				}
 
-				// Сохранение в историю
 				function saveCurrentQrToHistory() {
 					if (!currentQRValue) {
 						alert('Сгенерируйте QR')
@@ -1224,7 +1189,6 @@
 					renderHistory()
 				}
 
-				// Очистка истории
 				function clearHistory() {
 					if (history.length > 0 && confirm('Удалить всю историю?')) {
 						history = []
@@ -1233,7 +1197,6 @@
 					}
 				}
 
-				// Поделиться текущим QR
 				function shareCurrent() {
 					if (!currentQRValue) return
 
@@ -1263,7 +1226,6 @@
 					openModal(tempItem, true)
 				}
 
-				// ОТКРЫТИЕ МОДАЛЬНОГО ОКНА
 				function openModal(item, isCurrent = false) {
 					currentModalItem = item
 					modalTitle.textContent = isCurrent
@@ -1294,13 +1256,11 @@
 					modalOverlay.style.display = 'flex'
 				}
 
-				// Закрытие модального окна
 				function closeModal() {
 					modalOverlay.style.display = 'none'
 					currentModalItem = null
 				}
 
-				// Использовать в генераторе
 				function useInGenerator() {
 					if (currentModalItem) {
 						qrInput.value = currentModalItem.value
@@ -1314,7 +1274,6 @@
 					}
 				}
 
-				// Поделиться из модалки
 				function shareFromModal() {
 					if (!currentModalItem) return
 
@@ -1337,7 +1296,6 @@
 					}
 				}
 
-				// Копирование в буфер
 				function copyToClipboard(text) {
 					const textarea = document.createElement('textarea')
 					textarea.value = text
@@ -1347,7 +1305,6 @@
 					document.body.removeChild(textarea)
 				}
 
-				// Сканирование QR с отзеркаливанием
 				async function startScanner() {
 					scannerOverlay.style.display = 'flex'
 					scanResult.style.display = 'none'
@@ -1444,7 +1401,6 @@
 					}
 				}
 
-				// Обработчики
 				modalCloseBtn.addEventListener('click', closeModal)
 				modalOverlay.addEventListener('click', e => {
 					if (e.target === modalOverlay) closeModal()
